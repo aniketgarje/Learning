@@ -1,6 +1,7 @@
 package com.phase.one.controller;
 
 
+import com.phase.one.globalexceptionhandler.CustomEmptyListException;
 import com.phase.one.model.Person;
 import com.phase.one.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -31,14 +31,15 @@ public class PersonController {
     private PersonService personService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllPerson() {
+    public ResponseEntity<List<Person>> getAllPerson() {
         List<Person> personsList = personService.getAllPerson();
         if (personsList.isEmpty()) {
-            return new ResponseEntity<>("There is no person in database", HttpStatus.NOT_FOUND);
+            throw new CustomEmptyListException("404", "No data found in database");
         } else {
-            return new ResponseEntity<>(personsList, HttpStatus.OK);
+            return new ResponseEntity<List<Person>>(personsList, HttpStatus.OK);
         }
     }
+//    }
 
     @PostMapping("/create")
     public ResponseEntity<Person> createPerson(@RequestBody Person person) {
@@ -47,14 +48,15 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPersonById(@PathVariable Integer id) {
-        Optional<Person> person = personService.getPersonById(id);
-        if (person.isPresent()) {
-            return new ResponseEntity<>(person.get(), HttpStatus.OK);
-
-        } else {
-            return new ResponseEntity<>("There is no id associated in database with any person", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Person> getPersonById(@PathVariable Integer id) {
+        Person person = personService.getPersonById(id);
+//        if (person.isPresent()) {
+//            return new ResponseEntity<>(person.get(), HttpStatus.OK);
+//
+//        } else {
+//            return new ResponseEntity<>("There is no id associated in database with any person", HttpStatus.NOT_FOUND);
+//        }
+        return new ResponseEntity<Person>(person, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
