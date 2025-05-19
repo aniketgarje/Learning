@@ -20,10 +20,10 @@ public class PersonController {
     Note - Change port number as per your configuration of application
          - I have used MySQL Database in this project
 
-    http://localhost:8081/api/all      - get all data from database
-    http://localhost:8081/api/4        - get by id
-    http://localhost:8081/api/create   - create new person
-    http://localhost:8081/api/delete/102      - delete by id
+    http://localhost:8080/api/all      - get all data from database
+    http://localhost:8080/api/4        - get by id
+    http://localhost:8080/api/create   - create new person
+    http://localhost:8080/api/delete/102      - delete by id
     */
 
 
@@ -49,12 +49,12 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPersonById(@PathVariable Integer id) {
         Optional<Person> person = personService.getPersonById(id);
-        if (person.isPresent()) {
+        /*if (person.isPresent()) {*/
             return new ResponseEntity<>(person.get(), HttpStatus.OK);
 
-        } else {
+        /*else {
             return new ResponseEntity<>("There is no id associated in database with any person", HttpStatus.NOT_FOUND);
-        }
+        }*/
     }
 
     @DeleteMapping("/delete/{id}")

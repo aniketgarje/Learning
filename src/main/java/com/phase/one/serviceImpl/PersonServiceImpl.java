@@ -1,5 +1,6 @@
 package com.phase.one.serviceImpl;
 
+import com.phase.one.exception.EmptyInputException;
 import com.phase.one.model.Person;
 import com.phase.one.repository.PersonRepository;
 import com.phase.one.service.PersonService;
@@ -21,6 +22,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person savePerson(Person person) {
+        if(person.getName().isEmpty() || person.getName().length() ==0){
+                throw new EmptyInputException("601","Input fiels are empty");
+        }
         return personRepository.save(person);
     }
 
