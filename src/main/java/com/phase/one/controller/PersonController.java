@@ -3,9 +3,11 @@ package com.phase.one.controller;
 
 import com.phase.one.model.Person;
 import com.phase.one.service.PersonService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,6 +46,12 @@ public class PersonController {
     public ResponseEntity<Person> createPerson(@RequestBody Person person) {
         Person savePerson = personService.savePerson(person);
         return new ResponseEntity<>(savePerson, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/csrf")
+    public CsrfToken getCsrfTOken(HttpServletRequest httpServletRequest){
+        return (CsrfToken) httpServletRequest.getAttribute("_csrf");
+
     }
 
     @GetMapping("/{id}")
